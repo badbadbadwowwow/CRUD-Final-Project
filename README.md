@@ -4,7 +4,7 @@
 ## Presented by Team 3 : 
 - Stephen Matthews (252404175)
 - Dearryl Jeremiah Mawuntu (252410907)
-- Wilson Leonardo (252502509)
+- Wilson Leonardo (252502509) absen king
 - Chiara Clover Gunawan (252404486)
 ---
 <!-- 
