@@ -12,9 +12,9 @@ groups_of_data = {}
 
 # main to make it clear and explicit !
 if __name__ == '__main__':
-    main_data_dict, groups_of_data = df_.read_n_dict(file_path, GROUPABLES, RANKED_FIELD, STORED_RANKS)
+    main_data_dict, groups_of_data = df_.cf_.read_n_dict(file_path, GROUPABLES, RANKED_FIELD, STORED_RANKS)
 
-    
+
     # for name in main_data_dict:
     #     print(f"{name} : {main_data_dict[name]}")
 
