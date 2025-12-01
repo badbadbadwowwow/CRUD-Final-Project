@@ -17,12 +17,11 @@ if __name__ == '__main__':
 
     # finish and write evrything in the system back to file storage
     # df_.cf_.write_dicts(file_path, fieldnames, main_data_dict, groups_of_data, RANKED_FIELD, STORED_RANKS)
-    ranking = groups_of_data[RANKED_FIELD].keys().sort()
-    print(ranking)
 
-    # df_.cf_.get_by_group(groups_of_data, "Marketcap")
-    # for name in main_data_dict:
-    #     print(f"{name} : {main_data_dict[name]}")
+
+    # df_.cf_.get_by_major_group(groups_of_data, "Marketcap")
+    for name in main_data_dict:
+        print(f"{name} : {main_data_dict[name]}")
     # for major_group in groups_of_data:
     #     print(f"<<< {major_group} >>>")
     #     for group_name in groups_of_data[major_group]:

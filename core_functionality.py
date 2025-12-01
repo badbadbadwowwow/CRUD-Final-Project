@@ -32,11 +32,17 @@ def read_n_dict(file_path, groupables, ranked_field, stored_ranks):
 
 # Write back to file from the dictionaries
 def write_dicts(file_path, headers, main_dict, group_dict, ranked_field, stored_rank):
-    # get the rank sorted out
-    ranking = group_dict[ranked_field].keys().sort()
-    
     with open(file_path, "w", newline='', encoding='utf-8') as file_:
+        # get the rank sorted out
+        ranked_values = list(group_dict[ranked_field].keys())
+        ranked_values.sort(reverse=True)
+
         writer = csv.DictWriter(file_, fieldnames=headers)
+        for rank, value in enumerate(ranked_values):
+            list_of_names = group_dict[ranked_field][value]
+            for name in list_of_names:
+                main_dict[name][stored_rank] = rank
+                writer.writerow({"Name" : name, **main_dict[name]})
 
 
 # debug tools
