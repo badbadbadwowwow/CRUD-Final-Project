@@ -8,7 +8,8 @@ def read_n_dict(file_path, groupables, ranked_field, stored_ranks):
     with open(file_path, 'r', newline='', encoding='utf-8') as file_:
         # This CRUD is very field name dependent so we need to use DictReader to abstract away unneccessary complexity
         reader = csv.DictReader(file_)
-
+        # append the ranked field to groupables to make ranking easy
+        groupables.append(ranked_field) 
         # initialize the group_dict
         for fieldname in groupables: group_dict[fieldname] = {}
         
@@ -36,3 +37,13 @@ def write_dicts(file_path, headers, main_dict, group_dict, ranked_field, stored_
     
     with open(file_path, "w", newline='', encoding='utf-8') as file_:
         writer = csv.DictWriter(file_, fieldnames=headers)
+
+
+# debug tools
+def get_by_major_group(dict_, major_group):
+    print(f"<<< {major_group} >>>")
+    for target_ in dict_[major_group]:
+        print(f"{target_} === {dict_[major_group][target_]}")
+
+def get_by_group(dict_, major_group, target_):
+    print(f"{target_} === {dict_[major_group][target_]}")
