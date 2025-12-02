@@ -10,7 +10,7 @@ def read_n_dict(file_path, main_key, groupables, ranked_field, rank_storage):
         reader = csv.DictReader(file_)
         # append the ranked field to groupables to make ranking easy
         groupables.append(ranked_field) 
-        # initialize the group_dict
+        # initialize the group_dict, for each field make an empty dict
         for fieldname in groupables: group_dict[fieldname] = {}
         
         # populate the main dictionary and group
@@ -20,6 +20,7 @@ def read_n_dict(file_path, main_key, groupables, ranked_field, rank_storage):
             row_[rank_storage] = int(row_[rank_storage]) # convert these as numerical value
             main_dict[name] = row_ # main contains all the fields as value of each Name as key
 
+            # for each fieldnames to be group-ed
             for group in groupables: # populate the group_dict
                 group_name = row_[group] # get the name of the current row's group
                 if group_name not in group_dict[group]: # create the list if it havent existed yet

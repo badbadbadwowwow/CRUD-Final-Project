@@ -9,6 +9,7 @@ GROUPABLES = ["Symbol", "Country"]
 RANKED_FIELD = "Marketcap"
 # where to store the ranking
 RANK_STORAGE = "Rank"
+
 main_data_dict = {}
 groups_of_data = {}
 
