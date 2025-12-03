@@ -16,8 +16,11 @@ def read_n_dict(file_path, MAIN_KEY, groupables, RANKED_FIELD, RANK_STORAGE):
         # populate the main dictionary and group
         for row_ in reader:
             name = row_.pop(MAIN_KEY) # the Name field becomes the keys
-            row_[RANKED_FIELD] = float(row_[RANKED_FIELD]) # convert these as numerical value
-            row_[RANK_STORAGE] = float(row_[RANK_STORAGE]) # convert these as numerical value
+            try :
+                row_[RANKED_FIELD] = float(row_[RANKED_FIELD]) # convert these as numerical value
+                row_[RANK_STORAGE] = float(row_[RANK_STORAGE]) # convert these as numerical value
+            except ValueError: continue # skip invalid data
+
             main_dict[name] = row_ # main contains all the fields as value of each Name as key
 
             group_dict = handle_groups(groupables, name, row_, group_dict)

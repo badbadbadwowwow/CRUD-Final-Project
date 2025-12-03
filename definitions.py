@@ -16,7 +16,16 @@ def create(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     while True:
         answers_buffer = {}
         # prompt the new key first
-        new_key = input(f"Set the {MAIN_KEY} : ")
+        new_key = input(f"Create the {MAIN_KEY} : ")
+
+
+        # Check if data with that key already exists
+        if new_key in main_dict:
+            print(f"{new_key} already existed ! {main_dict[new_key]}")
+            if input("Use UPDATE mode to change that.\nWant to create something new ? (y/n)") in 'Yy': continue # restart the create loop
+            else : break # exit create mode
+        
+
         # prompt the fields of that key
         for field in fieldnames:
             if field == RANKED_FIELD : # if the user has to fill in the RANKED_FIELD must be numeric
@@ -49,8 +58,24 @@ def read__(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     print("!! Read data information by their Keys or Groups. !!")
     # read loop
     while True:
-        print("SELECT WHICH TO READ :")
-        print("")
+        print(f"SELECT WHICH TO READ :\n1. By '{MAIN_KEY}' keys\n2. By Field Groups\n3. Cancel & Exit")
+        found_something = False
+        response = input("Enter Action : ")
+        if response == '1':
+            found_something = show_by_main_keys(main_dict, MAIN_KEY) # if something is found offer to read or update it
+        elif response == '2':
+            found_something = show_by_group_values(main_dict, group_dict, MAIN_KEY) # show by groups
+        elif response == '3': break
+
+
+        if found_something:
+            match input("Do you want to proceed to : 1. Update | 2. Delete"):
+                case '1': # The use of return is to quit this read scope imidiately after end of update process
+                    return update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
+                case '2':
+                    return delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
+        elif input("Want to find something else ? (y/n)") in 'Yy' : continue
+        else: break
     return main_dict, group_dict
 
 
@@ -67,6 +92,22 @@ def delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     print("Welcome to <<< DELETE MODE >>>")
     return main_dict, group_dict
 
+# ============================================================================================== 
+# ============================================================================================== 
+# ============================================================================================== 
+# help the read function to display main_dict details
+def show_by_main_keys(main_dict, MAIN_KEY):
+    main_key = input(f">>> Enter {MAIN_KEY} : ")
+    if main_key in main_dict.key() : # check if it exists yet
+        print(f"{main_key} :")
+        for key in main_dict[main_key]:
+            print(f">>> {key} : {main_dict[main_key][key]}")
+        return True # found something of that key
+    print(f"{main_key} doesn't exist...")
+    return False # found nothing
+# help the read function to display based on group_dict
+def show_by_group_values(main_dict, group_dict, MAIN_KEY):
+    print(f"")
 # simply display the menus of what to do
 def display_menu():
     print('''
