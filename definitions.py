@@ -69,7 +69,7 @@ def read__(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
 
 
         if found_something:
-            match input("Do you want to proceed to : 1. Update | 2. Delete"):
+            match input("Do you want to proceed to : 1. Update | 2. Delete  | Exit : "):
                 case '1': # The use of return is to quit this read scope imidiately after end of update process
                     return update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
                 case '2':
@@ -98,7 +98,7 @@ def delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
 # help the read function to display main_dict details
 def show_by_main_keys(main_dict, MAIN_KEY):
     main_key = input(f">>> Enter {MAIN_KEY} : ")
-    if main_key in main_dict.key() : # check if it exists yet
+    if main_key in main_dict : # check if it exists yet
         print(f"{main_key} :")
         for key in main_dict[main_key]:
             print(f">>> {key} : {main_dict[main_key][key]}")
@@ -108,6 +108,8 @@ def show_by_main_keys(main_dict, MAIN_KEY):
 # help the read function to display based on group_dict
 def show_by_group_values(main_dict, group_dict, MAIN_KEY):
     print(f"")
+
+    
 # simply display the menus of what to do
 def display_menu():
     print('''

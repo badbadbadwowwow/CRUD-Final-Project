@@ -48,7 +48,7 @@ if __name__ == '__main__':
     df_.cf_.write_dicts(file_path, FIELDNAMES, MAIN_KEY, main_data_dict, groups_of_data, RANKED_FIELD, RANK_STORAGE)
 
 
-    df_.cf_.get_by_major_group(groups_of_data, "Country")
+    # df_.cf_.get_by_major_group(groups_of_data, "Country")
     # for name in main_data_dict:
     #     print(f"{name} : {main_data_dict[name]}")
     # for major_group in groups_of_data:
