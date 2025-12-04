@@ -22,7 +22,7 @@ if __name__ == '__main__':
     while True:
         df_.display_menu()
         # get an action input
-        match input("Enter action : "):
+        match input("====================================== Enter action : "):
             # CREATE
             case '1':
                 main_data_dict, groups_of_data = df_.create(main_data_dict, groups_of_data, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
                 
             # EXIT
             case '5':
-                print("End of Session. Have a nice day !")
+                print("\n\nEnd of Session. Have a nice day !")
                 break
 
     # finish and write everything in the system back to file storage

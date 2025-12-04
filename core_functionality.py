@@ -15,7 +15,7 @@ def read_n_dict(file_path, MAIN_KEY, groupables, RANKED_FIELD, RANK_STORAGE):
         
         # populate the main dictionary and group
         for row_ in reader:
-            name = row_.pop(MAIN_KEY) # the Name field becomes the keys
+            name = (row_.pop(MAIN_KEY)).upper() # the Name field becomes the keys
             try :
                 row_[RANKED_FIELD] = float(row_[RANKED_FIELD]) # convert these as numerical value
                 row_[RANK_STORAGE] = int(row_[RANK_STORAGE]) # convert these as numerical value

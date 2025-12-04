@@ -16,7 +16,7 @@ def create(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     while True:
         answers_buffer = {}
         # prompt the new key first
-        new_key = input(f"Create the {MAIN_KEY} : ")
+        new_key = input(f"====================================== Create the {MAIN_KEY} : ").upper()
 
 
         # Check if data with that key already exists
@@ -47,7 +47,7 @@ def create(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
             print(f"Created {new_key} : {main_dict[new_key]}")
             
         # ask if the user wants to create another field
-        if input("Create another ? (y/n)") not in 'Yy': break
+        if input(": : : Create another ? (y/n)") not in 'Yy': break
     return main_dict, group_dict
 
 
@@ -58,7 +58,8 @@ def read__(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     print("!! Read data information by their Keys or Groups. !!")
     # read loop
     while True:
-        print(f"SELECT WHICH TO READ :\n1. By '{MAIN_KEY}' keys\n2. By Field Groups\n3. Cancel & Exit")
+        print(f"====================================== SELECT WHICH TO READ :")
+        print(f"1. By '{MAIN_KEY}' keys\n2. By Field Groups\n3. Cancel & Exit")
         found_something = False
         response = input("Enter Action : ")
         if response == '1':
@@ -74,7 +75,7 @@ def read__(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
                     return update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
                 case '2':
                     return delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
-        elif input("Want to find something else ? (y/n)") in 'Yy' : continue
+        elif input(": : : Want to find something else ? (y/n) ") in 'Yy' : continue
         else: break
     return main_dict, group_dict
 
@@ -97,7 +98,7 @@ def delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
 # ============================================================================================== 
 # help the read function to display main_dict details
 def show_by_main_keys(main_dict, MAIN_KEY):
-    main_key = input(f">>> Enter {MAIN_KEY} : ")
+    main_key = input(f">>> Enter {MAIN_KEY} : ").upper()
     if main_key in main_dict : # check if it exists yet
         print(f"{main_key} :")
         for key in main_dict[main_key]:
@@ -105,6 +106,7 @@ def show_by_main_keys(main_dict, MAIN_KEY):
         return True # found something of that key
     print(f"{main_key} doesn't exist...")
     return False # found nothing
+
 # help the read function to display based on group_dict
 def show_by_group_values(main_dict, group_dict, MAIN_KEY):
     print(f"")
