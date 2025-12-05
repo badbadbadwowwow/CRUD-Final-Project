@@ -133,6 +133,9 @@ def delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
                 group_name = main_dict[key2del][group]
                 group_name = group_name.upper() if type(group_name) == str else group_name
                 group_dict[group][group_name].remove(key2del)
+                
+                if not group_dict[group][group_name]: group_dict[group].pop(group_name)
+
             main_dict.pop(key2del)
         else: print(f"{key2del} not found in the CSV data")
         if input("Delete another ? (y/n)") not in 'Yy': break
@@ -174,7 +177,6 @@ def show_by_group_values(main_dict, group_dict, MAIN_KEY, RANKED_FIELD):
         if j % 10 == 0 : print()
     selected_group = input(f"\nSELECT from which group is the {MAIN_KEY} you're looking for ? ").upper()
     # CHECK IF THIS SELECTED GROUP IS FROM THE RANKED FIELD
-    print(selected_field, RANKED_FIELD)
     if selected_field == RANKED_FIELD:  # if the group is numeric try to convert
         print("Trying to convert to float...")
         try : selected_group = float(selected_group)
