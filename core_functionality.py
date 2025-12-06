@@ -21,28 +21,26 @@ def read_n_dict(file_path, MAIN_KEY, groupables, RANKED_FIELD, RANK_STORAGE):
                 row_[RANK_STORAGE] = int(row_[RANK_STORAGE]) # convert these as numerical value
             except ValueError: continue # skip invalid data
 
-            row_buffer = {}
-            for key, value in row_.items(): # clean up string fields
-                if type(key) == str:
-                    key = key.upper()
-                if type(value) == str:
-                    value = value.upper()
-                row_buffer[key] = value
+            row_buffer = {} # buffer to transform everything to uppercase data
+            for key, value in row_.items():
+                if type(key) == str: key = key.upper()
+                if type(value) == str: value = value.upper()
+                row_buffer[key] = value # the buffer now stores normalized uppercase data
             
-            main_dict[name] = row_buffer # main contains all the fields as value of each Name as key
+            main_dict[name] = row_buffer # main contains all the fields as value of each name as key
 
-            group_dict = handle_groups(groupables, name, row_, group_dict)
+            group_dict = add_groups(groupables, name, row_, group_dict) # store names into groups
             
         # return the dicts and fieldname, also indicate that the groupables were changed
         return reader.fieldnames, groupables, main_dict, group_dict
 
 
 # handle inserting new groups into the group dict
-def handle_groups(GROUPABLES, name_key, row_value, group_dict):
+def add_groups(GROUPABLES, name_key, row_value, group_dict):
     # for each fieldnames to be group-ed
     for group in GROUPABLES: # populate the group_dict
         group_name = row_value[group] # get the name of the current row's group
-        group_name = group_name.upper() if type(group_name) == str else group_name
+        if type(group_name) == str : group_name = group_name.upper()
         if group_name not in group_dict[group]: # create the list if it havent existed yet
             group_dict[group][group_name] = [name_key] # This creates the first list of names!
         else : group_dict[group][group_name].append(name_key) # just append otherwise
@@ -53,12 +51,12 @@ def handle_groups(GROUPABLES, name_key, row_value, group_dict):
 def write_dicts(file_path, headers, MAIN_KEY, main_dict, group_dict, RANKED_FIELD, stored_rank):
     with open(file_path, "w", newline='', encoding='utf-8') as file_:
         # get the rank sorted out in decending order
-        ranked_values = list(group_dict[RANKED_FIELD].keys())
+        ranked_values = list(group_dict[RANKED_FIELD].keys()) # guaranteed sortable values
         ranked_values.sort(reverse=True)
 
         # prepare the writer and write the header first
         writer = csv.DictWriter(file_, fieldnames=headers)
-        writer.writeheader()
+        writer.writeheader() # self explanatory
 
         # write to file based on the sorted ranks
         for rank, value in enumerate(ranked_values):

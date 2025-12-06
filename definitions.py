@@ -60,13 +60,13 @@ def read__(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     while True:
         print(f"====================================== SELECT WHICH TO READ :")
         print(f"1. By '{MAIN_KEY}' keys\n2. By Field Groups\n3. Cancel & Exit")
-        found_something = False
+        found_something = False # to check if something was found
         match input("Enter Action : "):
             case '1': found_something = show_by_main_keys(main_dict, MAIN_KEY) # if something is found offer to read or update it
             case '2': found_something = show_by_group_values(main_dict, group_dict, MAIN_KEY, RANKED_FIELD) # show by groups
             case '3': break
 
-        if found_something:
+        if found_something: # only if something was found
             match input("Do you want to proceed to : 1. Update | 2. Delete  | 3. Read | Exit : "):
                 case '1': # The use of return is to quit this read scope imidiately after end of update process
                     return update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE)
@@ -87,8 +87,10 @@ def update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
     # update loop
     while True:
 
+        # ask which key of the data to update
         selected_key = input(f": : : : : Enter the {MAIN_KEY} of the data you want to change : (enter nothing to exit) ").upper()
-        # if there is no such key that was selected
+
+        # if there is no such key that was selected ---> NEGATIVE CASE
         if selected_key not in main_dict:
             print(f"No such {MAIN_KEY} of that '{selected_key}' exists.")
             break # -------------------------------------------------
@@ -99,24 +101,28 @@ def update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
             print(f"!!! < {MAIN_KEY} : {selected_key} > : ")
             for key, value in main_dict[selected_key].items():
                 print(f">>> {key} : {value}")
-            which_to_change = input("= = = = = Enter which do you want to change : (enter nothing to exit) ")
-            if which_to_change == MAIN_KEY:
-                print(f"YOU ARE ABOUT TO CHANGE THE {MAIN_KEY} !")
+            
+            # ask which data  to update
+            which_to_change = input("= = = = = Enter which do you want to change : (enter nothing to cancel) ").upper()
+
+            # in case the user wants to change the name which is more significant
+            if which_to_change == MAIN_KEY: # MAIN_KEY technically not in main_dict[selected_key]
+                print(f"YOU ARE ABOUT TO CHANGE THE '{MAIN_KEY}' !")
                 new_main_key = input(f"What shall be the new {MAIN_KEY} : ").upper()
                 main_dict[new_main_key] = main_dict[selected_key] # new named key
                 main_dict.pop(selected_key) # remove the previously named key
             
-            # if the chosen thing to change is not present
-            if which_to_change not in main_dict[selected_key]:
+            # if the chosen thing to change is not present ---> NEGATIVE CASE
+            elif which_to_change not in main_dict[selected_key]:
                 print(f"No such key of that '{which_to_change}' exists.")
                 break # -------------------------------------------------
             
-            # ask to change it into what
-            if which_to_change == RANK_STORAGE:
+            # ask for change
+            if which_to_change == RANK_STORAGE: # the field that stores the rank is not changable
                 print("You're not allowed to change this ...")
-            elif which_to_change == RANKED_FIELD:
+            elif which_to_change == RANKED_FIELD: # the ranked field requires specific case management
                 main_dict[selected_key][which_to_change] = cf_.get_numeric(f"Enter new value for {which_to_change} : ")
-            else:
+            else: # typical
                 main_dict[selected_key][which_to_change] = input(f"Enter new value for {which_to_change} : ").upper()
 
     return main_dict, group_dict
@@ -126,20 +132,27 @@ def update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
 # the classic delete part of the CRUD --- BY DEARRYL 252410907
 def delete(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE):
     print("Welcome to <<< DELETE MODE >>>")
+    # program loop
     while True:
-        key2del = input("Enter the company you want to delete: ").upper()
-        # Finding and deleting it from main_dict and group_dict
-        if key2del in main_dict and input(f"Are you sure to delete {key2del}? (y/n): ") in 'Yy':
+
+        # ask for what to remove
+        key2del = input(f"Enter the {MAIN_KEY} you want to delete: ").upper()
+        
+        # if key2del exists and the user confirmed they want to delete it
+        if key2del not in main_dict : print(f"{key2del} not found in the CSV data")
+        elif input(f"Are you sure to delete {key2del}? (y/n): ") in 'Yy':
             # Removing it from group_dict first 
             for group in GROUPABLES:
                 group_name = main_dict[key2del][group]
-                group_name = group_name.upper() if type(group_name) == str else group_name
                 group_dict[group][group_name].remove(key2del)
                 
+                # delete empty group_names
                 if not group_dict[group][group_name]: group_dict[group].pop(group_name)
 
+            # finally remove from the main data dictionary
             main_dict.pop(key2del)
-        else: print(f"{key2del} not found in the CSV data")
+        
+        # ask if the user wants to break out of this program loop
         if input("Delete another ? (y/n)") not in 'Yy': break
     return main_dict, group_dict
 
