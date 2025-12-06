@@ -82,7 +82,64 @@ def read__(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD
 # ============================================================================================== UPDATE
 # the classic update part of the CRUD
 def update(main_dict, group_dict, FIELDNAMES, MAIN_KEY, GROUPABLES, RANKED_FIELD, RANK_STORAGE):
-    print("Welcome to <<< UPDATE MODE >>>")
+    print(" _ _ _ _ _ Welcome to <<< UPDATE MODE >>> _ _ _ _ _ ")
+    print("!!! Update existing data in the CSV file !!!")
+
+    # ask which key to update
+    key_to_update = input(f">>> Enter {MAIN_KEY} to update : ").upper()
+
+    # check key existence
+    if key_to_update not in main_dict:
+        print(f"{key_to_update} does NOT exist.")
+        return main_dict, group_dict
+
+    # show current data
+    print(f"\nCurrent Data for {key_to_update} :")
+    for f in main_dict[key_to_update]:
+        print(f" - {f}: {main_dict[key_to_update][f]}")
+
+    print("\nLeave field EMPTY if you do NOT want to update it.")
+
+    # FIELDNAMES but remove MAIN_KEY & RANK_STORAGE
+    editable_fields = FIELDNAMES.copy()
+    editable_fields.remove(MAIN_KEY)
+    editable_fields.remove(RANK_STORAGE)
+
+    updated_values = {}
+    old_values = main_dict[key_to_update].copy()
+
+    # START UPDATING EACH FIELD
+    for field in editable_fields:
+        current_value = main_dict[key_to_update][field]
+        new_value = input(f"Update '{field}' (current: {current_value}) : ")
+
+        # IF USER LEFT IT EMPTY → KEEP OLD VALUE
+        if new_value == "":
+            updated_values[field] = current_value
+        else:
+            # if this is the numeric field
+            if field == RANKED_FIELD:
+                updated_values[field] = cf_.get_numeric(f"Enter numeric for {field} : ") if new_value == "" else int(new_value)
+            else:
+                updated_values[field] = new_value
+
+    print("\nPreview Updated Data:")
+    for f in updated_values:
+        print(f" - {f}: {old_values[f]}  -->  {updated_values[f]}")
+
+    # confirm update
+    if input("Are you sure to APPLY these changes? (y/n): ") not in "Yy":
+        print("Update Cancelled.")
+        return main_dict, group_dict
+
+    # APPLY UPDATE
+    for field in updated_values:
+        main_dict[key_to_update][field] = updated_values[field]
+
+    # HANDLE GROUPING (if any groupable field changed)
+    group_dict = cf_.handle_groups(GROUPABLES, key_to_update, main_dict[key_to_update], group_dict)
+
+    print(f"Successfully Updated {key_to_update}!")
     return main_dict, group_dict
 
 
